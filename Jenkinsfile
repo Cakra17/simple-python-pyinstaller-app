@@ -1,11 +1,16 @@
-node {
-    stage('Build'){
-        try{
-            docker.image('python:2-alpine').inside {
-                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+pipeline {
+    agent none 
+    stages {
+        stage('Build') { 
+            agent {
+                docker {
+                    image 'python:3.12.0-alpine3.18' 
+                }
             }
-        } catch (e) {
-            throw e
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+                stash(name: 'compiled-results', includes: 'sources/*.py*') 
+            }
         }
     }
 }
