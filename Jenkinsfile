@@ -1,5 +1,4 @@
 node {
-    agent none
     stage('Build'){
         try{
             docker.image('python:2-alpine').inside {
